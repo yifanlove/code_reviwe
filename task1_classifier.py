@@ -14,8 +14,13 @@ from openai import OpenAI
 # ============================================================
 
 # API 配置
-client = OpenAI(api_key="sk-2be92185b8b841879f9285630f2deaee", base_url="https://api.deepseek.com")
-MODEL = "deepseek-v4-flash"
+API_KEY = os.environ.get("DEEPSEEK_API_KEY")
+if not API_KEY:
+    raise RuntimeError("未设置环境变量 DEEPSEEK_API_KEY，请先执行: export DEEPSEEK_API_KEY=your_key")
+BASE_URL = os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
+
+client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
+MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-flash")
 
 # 提示词配置文件路径（与此脚本同目录）
 PROMPTS_YAML = os.path.join(os.path.dirname(os.path.abspath(__file__)), "task1_prompts.yaml")
